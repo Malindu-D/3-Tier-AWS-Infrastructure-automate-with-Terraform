@@ -49,6 +49,17 @@ resource "aws_security_group" "app" {
     ]
   }
 
+  ingress {
+    description = "HTTP from web subnets"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [
+      "10.10.1.0/24", # public_web_1a
+      "10.10.2.0/24"  # public_web_1b
+    ]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -75,6 +86,17 @@ resource "aws_security_group" "db" {
     cidr_blocks = [
       "10.10.1.0/24", # public_web_1a
       "10.10.2.0/24"  # public_web_1b
+    ]
+  }
+
+  ingress {
+    description = "MySQL from app subnets"
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = [
+      "10.10.11.0/24", # private_app_1a
+      "10.10.12.0/24"  # private_app_1b
     ]
   }
 
